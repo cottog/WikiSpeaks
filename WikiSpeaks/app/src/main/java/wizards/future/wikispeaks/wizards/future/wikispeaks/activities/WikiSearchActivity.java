@@ -199,7 +199,9 @@ public class WikiSearchActivity extends ActionBarActivity {
                 String title = null;
                 try{
                     JSONObject jsonObject = new JSONObject(JSON);
-                    title = jsonObject.getJSONObject("parse").getString("title");
+                    title = jsonObject.getJSONObject("query").getJSONArray("random").getJSONObject(0).getString("title");
+                    title = title.replaceAll(" ","_");
+                    System.out.println(title);
                 }
                 catch(JSONException e){
                     e.printStackTrace();
