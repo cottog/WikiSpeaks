@@ -88,6 +88,8 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                         }
                     }
 
+                    postDebug("Section number " + Integer.toString(secNum) + " has been loaded.");
+
                     String jsonString = builder.toString();
                     String REGEX = ".*nosuchsection.*";
                     Pattern p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
@@ -142,12 +144,10 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     jsonString = jsonString.replaceAll("=","");
                     jsonString = jsonString.replaceAll("|","");
                     if (tts!= null) {
-                        if (!tts.isSpeaking()) {
-                            if(secNum == 0){
-                                tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
-                            }else{
-                                tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
-                            }
+                        if(secNum == 0){
+                            tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
+                        }else{
+                            tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
                         }
                     }
                     secNum++;
@@ -386,5 +386,15 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
             tts = null;
             Toast.makeText(this, "Failed to initialize", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void postDebug(final String s){
+        Runnable displayDebug = new Runnable() {
+            @Override
+            public void run() {
+                testText.setText(s + "\n"+ testText.getText());
+            }
+        };
+        testText.post(displayDebug);
     }
 }
