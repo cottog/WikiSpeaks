@@ -137,12 +137,16 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                         e.printStackTrace();
                     }
 
-                    jsonString = jsonString.replaceAll("\\{\\{.*?\\}\\}"," ");
+                    jsonString = jsonString.replaceAll("\\{\\{[^?]*\\}\\}"," ");
                     jsonString = jsonString.replaceAll("<.*>"," ");
+                    jsonString = jsonString.replaceAll("\\[\\[File[^?]*\\]\\]","");
+                    jsonString = jsonString.replaceAll("\\[\\[Image[^?]*\\]\\]","");
+                    jsonString = jsonString.replaceAll("\\[\\[[^?]{1,24}[|]","");
                     jsonString = jsonString.replaceAll("\\[","");
                     jsonString = jsonString.replaceAll("\\]","");
-                    jsonString = jsonString.replaceAll("=","");
-                    jsonString = jsonString.replaceAll("|","");
+                    jsonString = jsonString.replaceAll("[=]","");
+                    jsonString = jsonString.replaceAll("[|]","");
+                    jsonString = jsonString.replaceAll("[']","");
                     if (tts!= null) {
                         if(secNum == 0){
                             tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
