@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -193,8 +196,20 @@ public class WikiSearchActivity extends ActionBarActivity {
                 }
 
                 String JSON = builder.toString();
-
-
+                String title = null;
+                try{
+                    JSONObject jsonObject = new JSONObject(JSON);
+                    title = jsonObject.getJSONObject("parse").getString("title");
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+                final String articleTitle = title;
+                runOnUiThread(new Runnable(){
+                    public void run(){
+                        goToArticle(articleTitle);
+                    }
+                });
 
             }
         });
