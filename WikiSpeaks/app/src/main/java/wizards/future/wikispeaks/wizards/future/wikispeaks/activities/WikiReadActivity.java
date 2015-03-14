@@ -30,7 +30,7 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
     private String EXTRA_MESSAGE = "wizards.future.wikispeaks";
     private TextToSpeech tts;
     TextView testText;
-    String[] mArticleList;
+    ArrayList<String> mArticleList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +39,8 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
         Intent intent = getIntent();
         mArticleTitle = intent.getStringExtra(EXTRA_MESSAGE);
         testText = (TextView) findViewById(R.id.testText);
+
+        mArticleList = new ArrayList<>();
         //testText.setText(mArticleTitle);
 
         //getNumSections();
@@ -54,54 +56,103 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     //can't find an article with an empty title
                     return;
                 }
-                URL url;
-                BufferedReader reader = null;
-                StringBuilder builder = new StringBuilder();
-                try{
-                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + mArticleTitle;
-                    url = new URL(urlString);
-                }
-                catch(MalformedURLException e){
-                    //bad URL format
-                    e.printStackTrace();
-                    return;
-                }
-                //reading the file
-                try{
-                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                    String line;
-                    while((line = reader.readLine()) != null){
-                        builder.append(line);
+                int secNum = 0;
+                while(true) {
+                    URL url;
+                    BufferedReader reader = null;
+                    StringBuilder builder = new StringBuilder();
+                    try {
+                        String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + mArticleTitle + "&section=" + secNum;
+                        url = new URL(urlString);
+                    } catch (MalformedURLException e) {
+                        //bad URL format
+                        e.printStackTrace();
+                        return;
                     }
-                }
-                catch(IOException e){
-                    e.printStackTrace();
-                }
-                finally{
-                    if(reader != null){
-                        try{
-                            reader.close();
+                    //reading the file
+                    try {
+                        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            builder.append(line);
                         }
-                        catch(IOException e){
-                            e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (reader != null) {
+                            try {
+                                reader.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
+
+                    String jsonString = builder.toString();
+                    String REGEX = ".*nosuchsection.*";
+                    Pattern p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(jsonString); // get a matcher object
+                    boolean noSectionBoolean = m.matches();
+                    if(noSectionBoolean){
+                        break;
+                    }
+
+                    REGEX = ".*==See Also==.*";
+                    p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                    m = p.matcher(jsonString);
+                    boolean seeAlsoBoolean = m.matches();
+                    if(seeAlsoBoolean){
+                        break;
+                    }
+
+                    REGEX = ".*==References==.*";
+                    p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                    m = p.matcher(jsonString);
+                    boolean referencesBoolean = m.matches();
+                    if(referencesBoolean){
+                        break;
+                    }
+
+                    REGEX = ".*==Bibliography==.*";
+                    p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                    m = p.matcher(jsonString);
+                    boolean bibliographyBoolean = m.matches();
+                    if(bibliographyBoolean){
+                        break;
+                    }
+
+                    REGEX = ".*==External Links==.*";
+                    p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                    m = p.matcher(jsonString);
+                    boolean externalLinksBoolean = m.matches();
+                    if(externalLinksBoolean){
+                        break;
+                    }
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonString);
+                        jsonString = jsonObject.getJSONObject("parse").getJSONObject("wikitext").getString("*");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    jsonString = jsonString.replaceAll("\\{\\{.*?\\}\\}"," ");
+                    jsonString = jsonString.replaceAll("<.*>"," ");
+                    jsonString = jsonString.replaceAll("\\[","");
+                    jsonString = jsonString.replaceAll("\\]","");
+                    jsonString = jsonString.replaceAll("=","");
+                    jsonString = jsonString.replaceAll("|","");
+                    if (tts!= null) {
+                        if (!tts.isSpeaking()) {
+                            if(secNum == 0){
+                                tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
+                            }else{
+                                tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
+                            }
+                        }
+                    }
+                    secNum++;
                 }
 
-                String jsonString = builder.toString();
-                try{
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    jsonString = jsonObject.getJSONObject("parse").getJSONObject("wikitext").getString("*");
-                }
-                catch(JSONException e){
-                    e.printStackTrace();
-                }
-
-                if (tts!= null) {
-                    if (!tts.isSpeaking()) {
-                        tts.speak(jsonString, TextToSpeech.QUEUE_FLUSH, null);
-                    }
-                }
                 //text to speech goes here
 
             }
@@ -133,8 +184,7 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                 StringBuilder builder = new StringBuilder();
                 int numSections = 0;
                 try {
-                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + mArticleTitle
-                            + "&section=" + numSections;
+                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + mArticleTitle;
                     url = new URL(urlString);
                 } catch (MalformedURLException e) {
                     //bad URL format
@@ -200,18 +250,18 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     }
                 }
 
-                    String JSON = builder.toString();
+                    //String JSON = builder.toString();
 
                     //begin matching
 
 
-                final int numSectionsFinal = numSections;
+                /*final int numSectionsFinal = numSections;
                 runOnUiThread(new Runnable(){
                     public void run(){
                         //doArrayStuff(numSectionsFinal);
                         mArticleList = new String[numSectionsFinal];
                     }
-                });
+                });*/
             }
         });
         wikiThread.start();
@@ -281,22 +331,22 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     ex.printStackTrace();
                 }
                 final String finalJSON = JSON;
-                runOnUiThread(new Runnable(){
+                /*runOnUiThread(new Runnable(){
                     public void run(){
                         mArticleList[numSection] = finalJSON;
                         test();
                     }
-                });
+                });*/
             }
         });
         wikiThread.start();
     }
 
-    public void test(){
+    /*public void test(){
         String thisIsATest = mArticleList.length + "; \n[0] = " + mArticleList[0];
         Toast toast = Toast.makeText(getApplicationContext(), thisIsATest, Toast.LENGTH_SHORT);
         toast.show();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
