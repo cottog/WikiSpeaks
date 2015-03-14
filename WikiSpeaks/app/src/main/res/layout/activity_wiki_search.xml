@@ -5,31 +5,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="wizards.future.wikispeaks.wizards.future.wikispeaks.activities.WikiSearchActivity"
-    android:onClick="searchButtonHandler">
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:id="@+id/LogoView"
-        android:background="@mipmap/ic_launcher"
-        android:layout_marginTop="77dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    android:onClick="searchButtonHandler"
+    android:background="@drawable/background">
 
     <ImageButton
-        android:layout_width="200dp"
+        android:layout_width="225dp"
         android:layout_height="50dp"
         android:id="@+id/searchButton"
         android:background="@mipmap/ic_launcher"
-        android:layout_centerVertical="true"
+        android:onClick="searchButtonHandler"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="searchButtonHandler" />
+        android:layout_marginBottom="123dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
+        android:layout_marginBottom="147dp"
         android:layout_above="@+id/searchButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/searchButton" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/goButton"
+        android:layout_alignBottom="@+id/editText"
+        android:background="@drawable/button_selector"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toEndOf="@+id/editText" />
 </RelativeLayout>
