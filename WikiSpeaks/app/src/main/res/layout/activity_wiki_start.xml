@@ -10,8 +10,8 @@
         android:layout_width="275dp"
         android:layout_height="275dp"
         android:id="@+id/imageView"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/wikispeakslogo"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/wikispeakslogov3"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
