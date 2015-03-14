@@ -8,7 +8,6 @@ import android.app.Application;
  */
 public class WikiApplication extends Application {
     private Activity mCurrentActivity = null;
-    private boolean mHandsFree = false;
 
     public void onCreate(){
         super.onCreate();
@@ -17,14 +16,6 @@ public class WikiApplication extends Application {
 
     public synchronized void setCurrentActivity(Activity mCurrentActivity){
         this.mCurrentActivity = mCurrentActivity;
-    }
-
-    public boolean isHandsFree(){
-        return mHandsFree;
-    }
-
-    public void setHandsFree(boolean mHandsFree){
-        this.mHandsFree = mHandsFree;
     }
 
 
