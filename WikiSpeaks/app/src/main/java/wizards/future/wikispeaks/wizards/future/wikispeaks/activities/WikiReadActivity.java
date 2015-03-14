@@ -142,12 +142,10 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     jsonString = jsonString.replaceAll("=","");
                     jsonString = jsonString.replaceAll("|","");
                     if (tts!= null) {
-                        if (!tts.isSpeaking()) {
-                            if(secNum == 0){
-                                tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
-                            }else{
-                                tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
-                            }
+                        if(secNum == 0){
+                            tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
+                        }else{
+                            tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
                         }
                     }
                     secNum++;
