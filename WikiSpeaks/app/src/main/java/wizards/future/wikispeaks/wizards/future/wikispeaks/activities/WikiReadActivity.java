@@ -1,10 +1,12 @@
 package wizards.future.wikispeaks.wizards.future.wikispeaks.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.speech.tts.TextToSpeech;
@@ -42,6 +44,12 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
 
         mArticleList = new ArrayList<>();
         //testText.setText(mArticleTitle);
+
+        ImageView logoImage = (ImageView)findViewById(R.id.animView);
+        logoImage.setBackgroundResource(R.drawable.logo_animation);
+
+        AnimationDrawable frameAnimation = (AnimationDrawable) logoImage.getBackground();
+        frameAnimation.start();
 
         //getNumSections();
         //pullFromNetwork(0);
@@ -88,7 +96,7 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                         }
                     }
 
-                    postDebug("Section number " + Integer.toString(secNum) + " has been loaded.");
+                   //postDebug("Section number " + Integer.toString(secNum) + " has been loaded.");
 
                     String jsonString = builder.toString();
                     String REGEX = ".*nosuchsection.*";
@@ -149,7 +157,7 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                     jsonString = jsonString.replaceAll("[']","");
                     if (tts!= null) {
                         if(secNum == 0){
-                            tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH,null);
+                            tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
                         }else{
                             tts.speak(jsonString,TextToSpeech.QUEUE_ADD,null);
                         }

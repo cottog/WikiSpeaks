@@ -11,5 +11,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/testText" />
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/animView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
