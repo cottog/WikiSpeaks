@@ -4,4 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_wiki_start">WikiStartActivity</string>
+    <string name="title_activity_wiki_choose">WikiChooseActivity</string>
+    <string name="title_activity_wiki_search">WikiSearchActivity</string>
+    <string name="title_activity_wiki_read">WikiReadActivity</string>
 </resources>

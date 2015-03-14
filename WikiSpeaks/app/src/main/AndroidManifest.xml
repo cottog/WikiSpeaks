@@ -21,6 +21,18 @@
             android:name=".wizards.future.wikispeaks.activities.WikiStartActivity"
             android:label="@string/title_activity_wiki_start" >
         </activity>
+        <activity
+            android:name=".wizards.future.wikispeaks.activities.WikiChooseActivity"
+            android:label="@string/title_activity_wiki_choose" >
+        </activity>
+        <activity
+            android:name=".wizards.future.wikispeaks.activities.WikiSearchActivity"
+            android:label="@string/title_activity_wiki_search" >
+        </activity>
+        <activity
+            android:name=".wizards.future.wikispeaks.activities.WikiReadActivity"
+            android:label="@string/title_activity_wiki_read" >
+        </activity>
     </application>
 
 </manifest>
