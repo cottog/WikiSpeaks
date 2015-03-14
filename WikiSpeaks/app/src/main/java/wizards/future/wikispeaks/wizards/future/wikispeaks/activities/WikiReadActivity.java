@@ -5,14 +5,72 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import wizards.future.wikispeaks.R;
 
 public class WikiReadActivity extends ActionBarActivity {
-
+    private String mArticleTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wiki_read);
+        mArticleTitle = "Tiger"; /////////////////TO-DO
+        pullFromNetwork();
+    }
+
+    private void pullFromNetwork(){
+
+
+        Thread wikiThread = new Thread(new Runnable(){
+            public void run(){
+                //check to see if everything is well formatted
+                if(mArticleTitle.length() > 0){
+                    //can't find an article with an empty title
+                    return;
+                }
+                URL url;
+                BufferedReader reader = null;
+                StringBuilder builder = new StringBuilder();
+                try{
+                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + mArticleTitle;
+                    url = new URL(urlString);
+                }
+                catch(MalformedURLException e){
+                    //bad URL format
+                    e.printStackTrace();
+                    return;
+                }
+                //reading the file
+                try{
+                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        builder.append(line);
+                    }
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                }
+                finally{
+                    if(reader != null){
+                        try{
+                            reader.close();
+                        }
+                        catch(IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                String JSON = builder.toString();
+            }
+        });
+        wikiThread.start();
     }
 
 
