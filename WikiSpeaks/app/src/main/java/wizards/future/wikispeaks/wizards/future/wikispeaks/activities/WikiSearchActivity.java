@@ -37,6 +37,7 @@ public class WikiSearchActivity extends ActionBarActivity {
     public void searchButtonHandler(View v){
         //Get info from text input and send to JSON object and parse with Thread7
         final String articleTitle = mEditText.getText().toString();
+        final String articleTitleFormatted = articleTitle.replaceAll(" ","_");
 
 
         Thread checkerThread = new Thread(new Runnable(){
@@ -60,7 +61,7 @@ public class WikiSearchActivity extends ActionBarActivity {
                 BufferedReader reader = null;
                 StringBuilder builder = new StringBuilder();
                 try{
-                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + articleTitle;
+                    String urlString = "http://en.wikipedia.org/w/api.php?format=json&action=parse&prop=wikitext&redirects&page=" + articleTitleFormatted;
                     url = new URL(urlString);
                 }
                 catch(MalformedURLException e){
@@ -112,7 +113,7 @@ public class WikiSearchActivity extends ActionBarActivity {
                 else{
                     runOnUiThread(new Runnable(){
                         public void run(){
-                            goToArticle(articleTitle);
+                            goToArticle(articleTitleFormatted);
                         }
                     });
 

@@ -21,10 +21,11 @@ public class WikiStartActivity extends ActionBarActivity {
         mApplication = (WikiApplication) getApplication();
         mApplication.setCurrentActivity(this);
 
+        /*
         mHandsFreeButton = (ImageButton)findViewById(R.id.handsButton);
         if(!mApplication.isHandsFree()){
             mHandsFreeButton.setBackgroundResource(R.drawable.wikispeakshandsfree);
-        }
+        }*/
     }
 
     public void startButtonHandler(View v){

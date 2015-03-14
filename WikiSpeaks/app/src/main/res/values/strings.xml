@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WikiSpeaks</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="loading">Loading...</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_wiki_start">WikiStartActivity</string>
     <string name="title_activity_wiki_choose">WikiChooseActivity</string>
