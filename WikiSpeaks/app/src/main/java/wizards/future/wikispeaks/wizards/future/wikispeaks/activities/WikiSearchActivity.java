@@ -99,6 +99,11 @@ public class WikiSearchActivity extends ActionBarActivity {
                 Matcher m = p.matcher(JSON); // get a matcher object
                 boolean missingTitle = m.matches();
 
+                REGEX = ".*may refer to:.*";
+                p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+                m = p.matcher(JSON);
+                boolean disambiguation = m.matches();
+
                 if(missingTitle){
                     //make a toast
                     runOnUiThread(new Runnable(){
@@ -109,6 +114,15 @@ public class WikiSearchActivity extends ActionBarActivity {
                         }
                     });
 
+                }
+                else if(disambiguation){
+                    runOnUiThread(new Runnable(){
+                        public void run(){
+                            String disambiguationError = getString(R.string.disambiguation_pt1) + " \"" + articleTitle + "\" " + getString(R.string.disambiguation_pt2);
+                            Toast toast = Toast.makeText(getApplicationContext(), disambiguationError, Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 }
                 else{
                     runOnUiThread(new Runnable(){
