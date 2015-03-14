@@ -23,14 +23,7 @@
         android:background="@drawable/button_selector"
         android:onClick="startButtonHandler"
         android:layout_below="@+id/imageView"
-        android:layout_alignStart="@+id/imageView" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp" />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/handsButton"
-        android:background="@drawable/wikispeakshandsfree"
-        android:layout_alignTop="@+id/startButton"
-        android:layout_toEndOf="@+id/startButton"
-        android:onClick="handsFreeButtonHandler" />
 </RelativeLayout>
