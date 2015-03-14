@@ -35,11 +35,10 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wiki_read);
+        tts = new TextToSpeech(this,this);
         Intent intent = getIntent();
         mArticleTitle = intent.getStringExtra(EXTRA_MESSAGE);
         testText = (TextView) findViewById(R.id.testText);
-
-        tts = new TextToSpeech(this,this);
         //testText.setText(mArticleTitle);
 
         //getNumSections();
@@ -92,15 +91,16 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                 String jsonString = builder.toString();
                 try{
                     JSONObject jsonObject = new JSONObject(jsonString);
-                    jsonString = jsonObject.getString("wikitext");
+                    jsonString = jsonObject.getJSONObject("parse").getJSONObject("wikitext").getString("*");
                 }
                 catch(JSONException e){
                     e.printStackTrace();
                 }
 
-
-                if (!tts.isSpeaking()){
-                    tts.speak(jsonString,TextToSpeech.QUEUE_FLUSH, null);
+                if (tts!= null) {
+                    if (!tts.isSpeaking()) {
+                        tts.speak(jsonString, TextToSpeech.QUEUE_FLUSH, null);
+                    }
                 }
                 //text to speech goes here
 
@@ -276,7 +276,7 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
                 try{
                     JSONObject JSONObj = null;
                     JSONObj = new JSONObject(JSON);
-                    JSON = JSONObj.getString("wikitext");
+                    JSON = JSONObj.getJSONObject("parse").getJSONObject("wikitext").getString("*");
                 } catch (JSONException ex){
                     ex.printStackTrace();
                 }
@@ -318,6 +318,14 @@ public class WikiReadActivity extends ActionBarActivity implements TextToSpeech.
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        tts.shutdown();
     }
 
     @Override
