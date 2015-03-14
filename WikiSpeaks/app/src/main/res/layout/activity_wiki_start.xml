@@ -19,7 +19,7 @@
         android:layout_width="200dp"
         android:layout_height="75dp"
         android:id="@+id/startButton"
-        android:background="@mipmap/ic_launcher"
+        android:background="@drawable/wikispeaksstart"
         android:onClick="startButtonHandler"
         android:layout_below="@+id/imageView"
         android:layout_alignStart="@+id/imageView" />
