@@ -22,7 +22,8 @@
         android:id="@+id/searchButton"
         android:background="@mipmap/ic_launcher"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="searchButtonHandler" />
 
     <EditText
         android:layout_width="wrap_content"

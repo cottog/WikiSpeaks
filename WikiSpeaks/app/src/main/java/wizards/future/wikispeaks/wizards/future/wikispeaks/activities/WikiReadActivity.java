@@ -1,5 +1,6 @@
 package wizards.future.wikispeaks.wizards.future.wikispeaks.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,11 +16,13 @@ import wizards.future.wikispeaks.R;
 
 public class WikiReadActivity extends ActionBarActivity {
     private String mArticleTitle;
+    private String EXTRA_MESSAGE = "wizards.future.wikispeaks";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wiki_read);
-        mArticleTitle = "Tiger"; /////////////////TO-DO
+        Intent intent = getIntent();
+        mArticleTitle = intent.getStringExtra(EXTRA_MESSAGE);
         pullFromNetwork();
     }
 
