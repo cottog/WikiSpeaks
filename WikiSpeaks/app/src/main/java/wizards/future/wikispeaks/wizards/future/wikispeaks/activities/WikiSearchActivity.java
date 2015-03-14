@@ -142,4 +142,62 @@ public class WikiSearchActivity extends ActionBarActivity {
 
         startActivity(intent);
     }
+
+
+    public void randomButtonHandler(View v){
+        Thread checkerThread = new Thread(new Runnable(){
+
+            public void run(){
+
+                /*runOnUiThread(new Runnable(){
+                    public void run(){
+                        String thisIsATest = "The button works!!!\n" + articleTitle;
+                        Toast toast = Toast.makeText(getApplicationContext(), thisIsATest, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });*/
+
+                //check to see if everything is well formatted
+                URL url;
+                BufferedReader reader = null;
+                StringBuilder builder = new StringBuilder();
+                try{
+                    String urlString = "https://en.wikipedia.org/w/api.php?action=query&list=random&rnlimit=1&format=json&continue&rnnamespace=0";
+                    url = new URL(urlString);
+                }
+                catch(MalformedURLException e){
+                    //bad URL format
+                    e.printStackTrace();
+                    return;
+                }
+                //reading the file
+                try{
+                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        builder.append(line);
+                    }
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                }
+                finally{
+                    if(reader != null){
+                        try{
+                            reader.close();
+                        }
+                        catch(IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                String JSON = builder.toString();
+
+
+
+            }
+        });
+        checkerThread.start();
+    }
 }

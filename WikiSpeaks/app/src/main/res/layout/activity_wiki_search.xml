@@ -11,7 +11,7 @@
     <ImageButton
         android:layout_width="250dp"
         android:layout_height="132dp"
-        android:id="@+id/categoryButton"
+        android:id="@+id/randomButton"
         android:background="@drawable/wikispeakscategory"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:layout_marginBottom="147dp"
-        android:layout_above="@+id/categoryButton"
-        android:layout_alignEnd="@+id/categoryButton"
-        android:layout_alignStart="@+id/categoryButton"
+        android:layout_above="@+id/randomButton"
+        android:layout_alignEnd="@+id/randomButton"
+        android:layout_alignStart="@+id/randomButton"
         android:textAlignment="center" />
 
     <ImageButton
